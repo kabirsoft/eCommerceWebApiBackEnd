@@ -26,5 +26,18 @@ namespace eCommerceWebApiBackEnd.Controllers
             var result = await _productService.GetAllProductsAsync();
             return Ok(result);
         }
+
+
+        //Get: api/product/{productId}
+        [HttpGet("{productId}")]
+        public async Task<ActionResult<ServiceResponse<Product>>> GetProductById(int productId)
+        {
+            var result = await _productService.GetProductByIdAsync(productId);
+            if(result.Data == null)
+            {
+                return NotFound(result);
+            }
+            return Ok(result);
+        }
     }
 }
