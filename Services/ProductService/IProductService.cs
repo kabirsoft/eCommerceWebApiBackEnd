@@ -7,5 +7,6 @@ namespace eCommerceWebApiBackEnd.Services.ProductService
     {
         Task<ServiceResponse<List<Product>>> GetAllProductsAsync();
         Task<ServiceResponse<Product>> GetProductByIdAsync(int productId);
+        Task<ServiceResponse<List<Product>>> GetProductsByCategory(string categoryUrl);
     }
 }
