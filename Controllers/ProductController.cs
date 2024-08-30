@@ -27,7 +27,6 @@ namespace eCommerceWebApiBackEnd.Controllers
             return Ok(result);
         }
 
-
         //Get: api/product/{productId}
         [HttpGet("{productId}")]
         public async Task<ActionResult<ServiceResponse<Product>>> GetProductById(int productId)
@@ -39,6 +38,8 @@ namespace eCommerceWebApiBackEnd.Controllers
             }
             return Ok(result);
         }
+
+        //Get: api/product/category/{categoryUrl}
         [HttpGet("category/{categoryUrl}")]
         public async Task<ActionResult<ServiceResponse<List<Product>>>> GetProductsByCategory(string categoryUrl)
         {
