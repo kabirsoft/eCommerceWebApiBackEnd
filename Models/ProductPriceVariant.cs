@@ -3,7 +3,7 @@ using System.Text.Json.Serialization;
 
 namespace eCommerceWebApiBackEnd.Models
 {
-    public class ProductVariant
+    public class ProductPriceVariant
     {
         [JsonIgnore]
         public Product Product { get; set; }

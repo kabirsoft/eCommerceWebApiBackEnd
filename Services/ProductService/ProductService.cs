@@ -18,7 +18,7 @@ namespace eCommerceWebApiBackEnd.Services.ProductService
             var response = new ServiceResponse<List<Product>>
             {
                 Data = await _context.Products
-                .Include(p => p.ProductVariant)
+                .Include(p => p.ProductPriceVariant)
                 .ToListAsync()
             };
 
@@ -29,7 +29,7 @@ namespace eCommerceWebApiBackEnd.Services.ProductService
         {
             var response = new ServiceResponse<Product>();
             var product = await _context.Products
-                .Include(p => p.ProductVariant)
+                .Include(p => p.ProductPriceVariant)
                 .ThenInclude(p => p.ProductType)
                 .FirstOrDefaultAsync(p => p.Id == productId);
             if(product == null)
@@ -51,7 +51,7 @@ namespace eCommerceWebApiBackEnd.Services.ProductService
                 Data = await _context.Products
                   .Include(p => p.Category)
                   .Where(p => p.Category.Url.ToLower().Equals(categoryUrl.ToLower()))
-                  .Include(p => p.ProductVariant)
+                  .Include(p => p.ProductPriceVariant)
                   .ToListAsync()
             }; 
             return response;

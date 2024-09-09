@@ -11,7 +11,7 @@ namespace eCommerceWebApiBackEnd.Data
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            modelBuilder.Entity<ProductVariant>().HasKey(pv => new { pv.ProductId, pv.ProductTypeId });
+            modelBuilder.Entity<ProductPriceVariant>().HasKey(pv => new { pv.ProductId, pv.ProductTypeId });
 
             modelBuilder.Entity<ProductType>().HasData(
                 new ProductType { Id = 1, Name = "Default" },
@@ -124,111 +124,111 @@ namespace eCommerceWebApiBackEnd.Data
                 }
             );
 
-            modelBuilder.Entity<ProductVariant>().HasData(
-               new ProductVariant
+            modelBuilder.Entity<ProductPriceVariant>().HasData(
+               new ProductPriceVariant
                {
                    ProductId = 1,
                    ProductTypeId = 2,
                    Price = 9.99m,
                    OriginalPrice = 19.99m
                },
-               new ProductVariant
+               new ProductPriceVariant
                {
                    ProductId = 1,
                    ProductTypeId = 3,
                    Price = 7.99m
                },
-               new ProductVariant
+               new ProductPriceVariant
                {
                    ProductId = 1,
                    ProductTypeId = 4,
                    Price = 19.99m,
                    OriginalPrice = 29.99m
                },
-               new ProductVariant
+               new ProductPriceVariant
                {
                    ProductId = 2,
                    ProductTypeId = 2,
                    Price = 7.99m,
                    OriginalPrice = 14.99m
                },
-               new ProductVariant
+               new ProductPriceVariant
                {
                    ProductId = 3,
                    ProductTypeId = 2,
                    Price = 6.99m
                },
-               new ProductVariant
+               new ProductPriceVariant
                {
                    ProductId = 4,
                    ProductTypeId = 5,
                    Price = 3.99m
                },
-               new ProductVariant
+               new ProductPriceVariant
                {
                    ProductId = 4,
                    ProductTypeId = 6,
                    Price = 9.99m
                },
-               new ProductVariant
+               new ProductPriceVariant
                {
                    ProductId = 4,
                    ProductTypeId = 7,
                    Price = 19.99m
                },
-               new ProductVariant
+               new ProductPriceVariant
                {
                    ProductId = 5,
                    ProductTypeId = 5,
                    Price = 3.99m,
                },
-               new ProductVariant
+               new ProductPriceVariant
                {
                    ProductId = 6,
                    ProductTypeId = 5,
                    Price = 2.99m
                },
-               new ProductVariant
+               new ProductPriceVariant
                {
                    ProductId = 7,
                    ProductTypeId = 8,
                    Price = 19.99m,
                    OriginalPrice = 29.99m
                },
-               new ProductVariant
+               new ProductPriceVariant
                {
                    ProductId = 7,
                    ProductTypeId = 9,
                    Price = 69.99m
                },
-               new ProductVariant
+               new ProductPriceVariant
                {
                    ProductId = 7,
                    ProductTypeId = 10,
                    Price = 49.99m,
                    OriginalPrice = 59.99m
                },
-               new ProductVariant
+               new ProductPriceVariant
                {
                    ProductId = 8,
                    ProductTypeId = 8,
                    Price = 9.99m,
                    OriginalPrice = 24.99m,
                },
-               new ProductVariant
+               new ProductPriceVariant
                {
                    ProductId = 9,
                    ProductTypeId = 8,
                    Price = 14.99m
                },
-               new ProductVariant
+               new ProductPriceVariant
                {
                    ProductId = 10,
                    ProductTypeId = 1,
                    Price = 159.99m,
                    OriginalPrice = 299m
                },
-               new ProductVariant
+               new ProductPriceVariant
                {
                    ProductId = 11,
                    ProductTypeId = 1,
@@ -241,6 +241,6 @@ namespace eCommerceWebApiBackEnd.Data
         public DbSet<Product> Products { get; set; }
         public DbSet<Category> Categories { get; set; }
         public DbSet<ProductType> ProductTypes { get; set; }    
-        public DbSet<ProductVariant> ProductVariants { get; set; }
+        public DbSet<ProductPriceVariant> ProductPriceVariant { get; set; }
     }
 }
