@@ -24,7 +24,6 @@ namespace eCommerceWebApiBackEnd.Services.ProductService
 
             return response;
         }
-
         public async Task<ServiceResponse<Product>> GetProductByIdAsync(int productId)
         {
             var response = new ServiceResponse<Product>();
@@ -43,7 +42,6 @@ namespace eCommerceWebApiBackEnd.Services.ProductService
             }
             return response;
         }
-
         public async Task<ServiceResponse<List<Product>>> GetProductsByCategory(string categoryUrl)
         {
             var response = new ServiceResponse<List<Product>>
@@ -56,7 +54,31 @@ namespace eCommerceWebApiBackEnd.Services.ProductService
             }; 
             return response;
         }
-
+        public async Task<ServiceResponse<List<string>>> GetProductSearchSuggestions(string searchText)
+        {
+            var products = await FindProductsBySearchText(searchText);
+            List<string> suggestions = new List<string>();
+            foreach (var product in products)
+            {
+                if(product.Title.Contains(searchText, StringComparison.OrdinalIgnoreCase))
+                {
+                    suggestions.Add(product.Title);
+                }
+                if (product.Description != null)
+                {
+                    var punctuation = product.Description.Where(Char.IsPunctuation).Distinct().ToArray();
+                    var words = product.Description.Split().Select(x => x.Trim(punctuation));
+                    foreach (var word in words)
+                    {
+                        if(word.Contains(searchText, StringComparison.OrdinalIgnoreCase) && !suggestions.Contains(word))
+                        {
+                            suggestions.Add(word);
+                        }
+                    }
+                }
+            }
+            return new ServiceResponse<List<string>> { Data = suggestions };
+        }
         public async Task<ServiceResponse<List<Product>>> SearchProducts(string searchText)
         {
             var response = new ServiceResponse<List<Product>>();
@@ -66,18 +88,21 @@ namespace eCommerceWebApiBackEnd.Services.ProductService
                 response.Data = new List<Product>(); // Return an empty list if searchText is null or whitespace
                 return response;
             }
-
-            searchText = searchText.ToLower(); // Make searchText case-insensitive once
-
-            response.Data = await _context.Products
-                .Include(p => p.ProductVariant)
-                    .ThenInclude(v => v.ProductType) // Include ProductType if needed
-                .Where(p => p.Title.ToLower().Contains(searchText)
-                            || p.Description.ToLower().Contains(searchText)
-                            || p.ProductVariant.Any(v => v.ProductType.Name.ToLower().Contains(searchText))) // Search within ProductVariant
-                .ToListAsync();
+            
+            response.Data = await FindProductsBySearchText(searchText);
 
             return response;
+        }
+        private async Task<List<Product>> FindProductsBySearchText(string searchText)
+        {
+            searchText = searchText.ToLower(); // Make searchText case-insensitive once
+            return await _context.Products
+                .Include(p => p.ProductVariant)
+                .ThenInclude(v => v.ProductType)
+                .Where(p => p.Title.ToLower().Contains(searchText)
+                         || p.Description.ToLower().Contains(searchText)
+                         || p.ProductVariant.Any(v => v.ProductType.Name.ToLower().Contains(searchText)))
+                .ToListAsync();
         }
     }
 }
