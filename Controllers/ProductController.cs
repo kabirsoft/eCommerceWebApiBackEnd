@@ -50,5 +50,17 @@ namespace eCommerceWebApiBackEnd.Controllers
             }
             return Ok(result);
         }
+
+        //Get: api/product/search/{searchText}
+        [HttpGet("search/{searchText}")]
+        public async Task<ActionResult<ServiceResponse<List<Product>>>> SearchProducts(string searchText)
+        {
+            var result = await _productService.SearchProducts(searchText);
+            if(result.Data == null)
+            {
+                return NotFound(result);
+            }
+            return Ok(result);
+        }
     }
 }
