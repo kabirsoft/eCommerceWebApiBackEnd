@@ -11,11 +11,11 @@ namespace eCommerceWebApiBackEnd.Controllers
     [Route("api/[controller]")]
     [ApiController]
     public class ProductController : ControllerBase
-    {        
+    {
         private readonly IProductService _productService;
 
         public ProductController(IProductService productService)
-        {            
+        {
             _productService = productService;
         }
 
@@ -32,7 +32,7 @@ namespace eCommerceWebApiBackEnd.Controllers
         public async Task<ActionResult<ServiceResponse<Product>>> GetProductById(int productId)
         {
             var result = await _productService.GetProductByIdAsync(productId);
-            if(result.Data == null)
+            if (result.Data == null)
             {
                 return NotFound(result);
             }
@@ -44,7 +44,7 @@ namespace eCommerceWebApiBackEnd.Controllers
         public async Task<ActionResult<ServiceResponse<List<Product>>>> GetProductsByCategory(string categoryUrl)
         {
             var result = await _productService.GetProductsByCategory(categoryUrl);
-            if(result.Data == null)
+            if (result.Data == null)
             {
                 return NotFound(result);
             }
@@ -56,7 +56,7 @@ namespace eCommerceWebApiBackEnd.Controllers
         public async Task<ActionResult<ServiceResponse<List<Product>>>> SearchProducts(string searchText)
         {
             var result = await _productService.SearchProducts(searchText);
-            if(result.Data == null)
+            if (result.Data == null)
             {
                 return NotFound(result);
             }
@@ -65,10 +65,10 @@ namespace eCommerceWebApiBackEnd.Controllers
 
         //Get: api/product/suggestions/{searchText}
         [HttpGet("suggestions/{searchText}")]
-        public async Task<ActionResult<ServiceResponse<List<Product>>>> GetProductSearchSuggestions(string searchText)
+        public async Task<ActionResult<ServiceResponse<List<Product>>>> SearchProductsSuggestions(string searchText)
         {
-            var result = await _productService.GetProductSearchSuggestions(searchText);
-            if(result.Data == null)
+            var result = await _productService.SearchProductsSuggestions(searchText);
+            if (result.Data == null)
             {
                 return NotFound(result);
             }

@@ -17,7 +17,7 @@ namespace eCommerceWebApiBackEnd.Controllers
             _categoryService = categoryService;
         }
         [HttpGet]
-        public async Task<ActionResult<ServiceResponse<List<Category>>>> GetAllCategories() 
+        public async Task<ActionResult<ServiceResponse<List<Category>>>> GetAllCategories()
         {
             var result = await _categoryService.GetAllCategories();
             return Ok(result);

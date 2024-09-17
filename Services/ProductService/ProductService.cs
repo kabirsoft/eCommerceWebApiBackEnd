@@ -9,7 +9,7 @@ namespace eCommerceWebApiBackEnd.Services.ProductService
     {
         private readonly DataContext _context;
 
-        public ProductService(DataContext context) 
+        public ProductService(DataContext context)
         {
             _context = context;
         }
@@ -31,14 +31,14 @@ namespace eCommerceWebApiBackEnd.Services.ProductService
                 .Include(p => p.ProductVariant)
                 .ThenInclude(p => p.ProductType)
                 .FirstOrDefaultAsync(p => p.Id == productId);
-            if(product == null)
+            if (product == null)
             {
                 response.Success = false;
                 response.Message = $"Product with Id: {productId} not found.";
             }
             else
             {
-                response.Data = product;                
+                response.Data = product;
             }
             return response;
         }
@@ -51,33 +51,8 @@ namespace eCommerceWebApiBackEnd.Services.ProductService
                   .Where(p => p.Category.Url.ToLower().Equals(categoryUrl.ToLower()))
                   .Include(p => p.ProductVariant)
                   .ToListAsync()
-            }; 
+            };
             return response;
-        }
-        public async Task<ServiceResponse<List<string>>> GetProductSearchSuggestions(string searchText)
-        {
-            var products = await FindProductsBySearchText(searchText);
-            List<string> suggestions = new List<string>();
-            foreach (var product in products)
-            {
-                if(product.Title.Contains(searchText, StringComparison.OrdinalIgnoreCase))
-                {
-                    suggestions.Add(product.Title);
-                }
-                if (product.Description != null)
-                {
-                    var punctuation = product.Description.Where(Char.IsPunctuation).Distinct().ToArray();
-                    var words = product.Description.Split().Select(x => x.Trim(punctuation));
-                    foreach (var word in words)
-                    {
-                        if(word.Contains(searchText, StringComparison.OrdinalIgnoreCase) && !suggestions.Contains(word))
-                        {
-                            suggestions.Add(word);
-                        }
-                    }
-                }
-            }
-            return new ServiceResponse<List<string>> { Data = suggestions };
         }
         public async Task<ServiceResponse<List<Product>>> SearchProducts(string searchText)
         {
@@ -88,10 +63,35 @@ namespace eCommerceWebApiBackEnd.Services.ProductService
                 response.Data = new List<Product>(); // Return an empty list if searchText is null or whitespace
                 return response;
             }
-            
+
             response.Data = await FindProductsBySearchText(searchText);
 
             return response;
+        }
+        public async Task<ServiceResponse<List<string>>> SearchProductsSuggestions(string searchText)
+        {
+            var products = await FindProductsBySearchText(searchText);
+            List<string> suggestions = new List<string>();
+            foreach (var product in products)
+            {
+                if (product.Title.Contains(searchText, StringComparison.OrdinalIgnoreCase))
+                {
+                    suggestions.Add(product.Title);
+                }
+                if (product.Description != null)
+                {
+                    var punctuation = product.Description.Where(Char.IsPunctuation).Distinct().ToArray();
+                    var words = product.Description.Split().Select(x => x.Trim(punctuation));
+                    foreach (var word in words)
+                    {
+                        if (word.Contains(searchText, StringComparison.OrdinalIgnoreCase) && !suggestions.Contains(word))
+                        {
+                            suggestions.Add(word);
+                        }
+                    }
+                }
+            }
+            return new ServiceResponse<List<string>> { Data = suggestions };
         }
         private async Task<List<Product>> FindProductsBySearchText(string searchText)
         {

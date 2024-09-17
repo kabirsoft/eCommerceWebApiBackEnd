@@ -19,7 +19,7 @@ namespace eCommerceWebApiBackEnd.Services.CategoryService
             return new ServiceResponse<List<Category>>
             {
                 Data = categories
-            };              
+            };
         }
     }
 }
