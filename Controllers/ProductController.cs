@@ -74,5 +74,17 @@ namespace eCommerceWebApiBackEnd.Controllers
             }
             return Ok(result);
         }
+
+        //Get: api/product/featured
+        [HttpGet("featured")]
+        public async Task<ActionResult<ServiceResponse<List<Product>>>> GetFeaturedProducts()
+        {
+            var result = await _productService.GetFeaturedProducts();
+            if (result.Data == null)
+            {
+                return NotFound(result);
+            }
+            return Ok(result);
+        }
     }
 }

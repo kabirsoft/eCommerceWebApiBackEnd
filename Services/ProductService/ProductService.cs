@@ -24,6 +24,19 @@ namespace eCommerceWebApiBackEnd.Services.ProductService
 
             return response;
         }
+
+        public async Task<ServiceResponse<List<Product>>> GetFeaturedProducts()
+        {
+            var response = new ServiceResponse<List<Product>>
+            {
+                Data = await _context.Products
+                .Include(p => p.ProductVariant)
+                .Where(p => p.Featured)
+                .ToListAsync()
+            };
+            return response;
+        }
+
         public async Task<ServiceResponse<Product>> GetProductByIdAsync(int productId)
         {
             var response = new ServiceResponse<Product>();

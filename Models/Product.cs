@@ -9,6 +9,7 @@ namespace eCommerceWebApiBackEnd.Models
         public string ImageUrl { get; set; } = string.Empty;
         public Category? Category { get; set; }
         public int CategoryId { get; set; }
+        public bool Featured { get; set; } = false;
         public List<ProductVariant> ProductVariant { get; set; } = new List<ProductVariant>();
     }
 }
