@@ -1,4 +1,5 @@
 ﻿using eCommerceWebApiBackEnd.Data;
+using eCommerceWebApiBackEnd.Dto;
 using eCommerceWebApiBackEnd.Models;
 using eCommerceWebApiBackEnd.Shared;
 using Microsoft.EntityFrameworkCore;
@@ -81,6 +82,33 @@ namespace eCommerceWebApiBackEnd.Services.ProductService
 
             return response;
         }
+
+        public async Task<ServiceResponse<ProductPaginationDto>> SearchProductsWithPagination(string searchText, int page)
+        {
+            var pageResults = 2f;
+            var pageCount = Math.Ceiling((await FindProductsBySearchText(searchText)).Count / pageResults);
+            var products = await _context.Products
+                .Include(p => p.ProductVariant)
+                .ThenInclude(v => v.ProductType)
+                .Where(p => p.Title.ToLower().Contains(searchText)
+                         || p.Description.ToLower().Contains(searchText)
+                         || p.ProductVariant.Any(v => v.ProductType.Name.ToLower().Contains(searchText)))
+                .Skip((page - 1) * (int)pageResults)
+                .Take((int)pageResults)
+                .ToListAsync();
+
+            var respone = new ServiceResponse<ProductPaginationDto> 
+            {
+                Data = new ProductPaginationDto
+                {
+                    Products = products,
+                    CurrentPage = page,
+                    Pages = (int)pageCount
+                }
+            };
+            return respone;
+        }
+
         public async Task<ServiceResponse<List<string>>> SearchProductsSuggestions(string searchText)
         {
             var products = await FindProductsBySearchText(searchText);

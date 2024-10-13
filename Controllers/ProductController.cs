@@ -1,10 +1,8 @@
-﻿using eCommerceWebApiBackEnd.Data;
+﻿using eCommerceWebApiBackEnd.Dto;
 using eCommerceWebApiBackEnd.Models;
 using eCommerceWebApiBackEnd.Services.ProductService;
 using eCommerceWebApiBackEnd.Shared;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
 
 namespace eCommerceWebApiBackEnd.Controllers
 {
@@ -56,6 +54,18 @@ namespace eCommerceWebApiBackEnd.Controllers
         public async Task<ActionResult<ServiceResponse<List<Product>>>> SearchProducts(string searchText)
         {
             var result = await _productService.SearchProducts(searchText);
+            if (result.Data == null)
+            {
+                return NotFound(result);
+            }
+            return Ok(result);
+        }
+
+        //Get: api/product/search/{searchText}/{page}
+        [HttpGet("search/{searchText}/{page}")]
+        public async Task<ActionResult<ServiceResponse<ProductPaginationDto>>> SearchProductsWithPagination(string searchText, int page = 1)
+        {
+            var result = await _productService.SearchProductsWithPagination(searchText, page);
             if (result.Data == null)
             {
                 return NotFound(result);
