@@ -86,7 +86,7 @@ namespace eCommerceWebApiBackEnd.Services.ProductService
         public async Task<ServiceResponse<ProductPaginationDto>> SearchProductsWithPagination(string searchText, int page)
         {
             var pageResults = 2f;
-            var pageCount = Math.Ceiling((await FindProductsBySearchText(searchText)).Count / pageResults);
+            var totalPages = Math.Ceiling((await FindProductsBySearchText(searchText)).Count / pageResults);
             var products = await _context.Products
                 .Include(p => p.ProductVariant)
                 .ThenInclude(v => v.ProductType)
@@ -103,7 +103,7 @@ namespace eCommerceWebApiBackEnd.Services.ProductService
                 {
                     Products = products,
                     CurrentPage = page,
-                    Pages = (int)pageCount
+                    TotalPages = (int)totalPages
                 }
             };
             return respone;
