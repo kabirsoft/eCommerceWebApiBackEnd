@@ -25,6 +25,18 @@ namespace eCommerceWebApiBackEnd.Controllers
             return Ok(result);
         }
 
+        //Get: api/product/page/{page}
+        [HttpGet("page/{page}")]
+        public async Task<ActionResult<ServiceResponse<ProductPaginationDto>>> GetAllProductsWithPagination(int page = 1)
+        {
+            var result = await _productService.GetAllProductsWithPagination(page);
+            if (result.Data == null)
+            {
+                return NotFound(result);
+            }
+            return Ok(result);
+        }
+
         //Get: api/product/{productId}
         [HttpGet("{productId}")]
         public async Task<ActionResult<ServiceResponse<Product>>> GetProductById(int productId)
@@ -42,6 +54,18 @@ namespace eCommerceWebApiBackEnd.Controllers
         public async Task<ActionResult<ServiceResponse<List<Product>>>> GetProductsByCategory(string categoryUrl)
         {
             var result = await _productService.GetProductsByCategory(categoryUrl);
+            if (result.Data == null)
+            {
+                return NotFound(result);
+            }
+            return Ok(result);
+        }
+
+        //Get: api/product/category/{categoryUrl}/page/{page}
+        [HttpGet("category/{categoryUrl}/page/{page}")]
+        public async Task<ActionResult<ServiceResponse<ProductPaginationDto>>> GetProductsByCategoryWithPagination(string categoryUrl, int page = 1)
+        {
+            var result = await _productService.GetProductsByCategoryWithPagination(categoryUrl, page);
             if (result.Data == null)
             {
                 return NotFound(result);
@@ -96,5 +120,17 @@ namespace eCommerceWebApiBackEnd.Controllers
             }
             return Ok(result);
         }
+
+        //Get: api/product/featured/page/{page}
+        [HttpGet("featured/page/{page}")]
+        public async Task<ActionResult<ServiceResponse<ProductPaginationDto>>> GetFeaturedProductsWithPagination(int page = 1)
+        {
+            var result = await _productService.GetFeaturedProductsWithPagination(page);
+            if (result.Data == null)
+            {
+                return NotFound(result);
+            }
+            return Ok(result);
+        }       
     }
 }

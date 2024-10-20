@@ -6,7 +6,10 @@ namespace eCommerceWebApiBackEnd.Services.ProductService
 {
     public interface IProductService
     {
-        Task<ServiceResponse<List<Product>>> GetAllProductsAsync();
+        Task<ServiceResponse<List<Product>>> GetAllProductsAsync();        
+        Task<ServiceResponse<ProductPaginationDto>> GetAllProductsWithPagination(int page);
+        Task<ServiceResponse<ProductPaginationDto>> GetFeaturedProductsWithPagination(int page);
+        Task<ServiceResponse<ProductPaginationDto>> GetProductsByCategoryWithPagination(string categoryUrl, int page);
         Task<ServiceResponse<Product>> GetProductByIdAsync(int productId);
         Task<ServiceResponse<List<Product>>> GetProductsByCategory(string categoryUrl);
         Task<ServiceResponse<List<Product>>> SearchProducts(string searchText);

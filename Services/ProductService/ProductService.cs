@@ -37,6 +37,59 @@ namespace eCommerceWebApiBackEnd.Services.ProductService
             };
             return response;
         }
+        public async Task<ServiceResponse<ProductPaginationDto>> GetFeaturedProductsWithPagination(int page)
+        {
+            var pageResults = 2f;
+            var totalFeaturedProducts = await _context.Products.Where(p => p.Featured).CountAsync();
+            var totalPages = Math.Ceiling(totalFeaturedProducts / pageResults);
+
+            var products = await _context.Products
+                .Include(p => p.ProductVariant)
+                .Where(p => p.Featured)
+                .Skip((page - 1) * (int)pageResults)
+                .Take((int)pageResults)
+                .ToListAsync();
+
+            var response = new ServiceResponse<ProductPaginationDto>
+            {
+                Data = new ProductPaginationDto
+                {
+                    Products = products,
+                    CurrentPage = page,
+                    TotalPages = (int)totalPages
+                }
+            };
+
+            return response;
+        }
+        public async Task<ServiceResponse<ProductPaginationDto>> GetProductsByCategoryWithPagination(string categoryUrl, int page)
+        {
+            var pageResults = 2f;
+            var totalProductsInCategory = await _context.Products
+                .Where(p => p.Category.Url.ToLower().Equals(categoryUrl.ToLower()))
+                .CountAsync();
+            var totalPages = Math.Ceiling(totalProductsInCategory / pageResults);
+
+            var products = await _context.Products
+                .Include(p => p.Category)
+                .Include(p => p.ProductVariant)
+                .Where(p => p.Category.Url.ToLower().Equals(categoryUrl.ToLower()))
+                .Skip((page - 1) * (int)pageResults)
+                .Take((int)pageResults)
+                .ToListAsync();
+
+            var response = new ServiceResponse<ProductPaginationDto>
+            {
+                Data = new ProductPaginationDto
+                {
+                    Products = products,
+                    CurrentPage = page,
+                    TotalPages = (int)totalPages
+                }
+            };
+
+            return response;
+        }
 
         public async Task<ServiceResponse<Product>> GetProductByIdAsync(int productId)
         {
@@ -82,7 +135,29 @@ namespace eCommerceWebApiBackEnd.Services.ProductService
 
             return response;
         }
+        public async Task<ServiceResponse<ProductPaginationDto>> GetAllProductsWithPagination(int page)
+        {
+            var pageResults = 4f; // Define how many products per page
+            var pageCount = Math.Ceiling(await _context.Products.CountAsync() / pageResults); // Get total number of pages
 
+            var products = await _context.Products
+                .Include(p => p.ProductVariant) // Include related data
+                .Skip((page - 1) * (int)pageResults) // Skip products for pagination
+                .Take((int)pageResults) // Take only the required number of products for the current page
+                .ToListAsync();
+
+            var response = new ServiceResponse<ProductPaginationDto>
+            {
+                Data = new ProductPaginationDto
+                {
+                    Products = products,
+                    CurrentPage = page,
+                    TotalPages = (int)pageCount
+                }
+            };
+
+            return response;
+        }
         public async Task<ServiceResponse<ProductPaginationDto>> SearchProductsWithPagination(string searchText, int page)
         {
             var pageResults = 2f;
@@ -144,6 +219,6 @@ namespace eCommerceWebApiBackEnd.Services.ProductService
                          || p.Description.ToLower().Contains(searchText)
                          || p.ProductVariant.Any(v => v.ProductType.Name.ToLower().Contains(searchText)))
                 .ToListAsync();
-        }
+        }        
     }
 }
