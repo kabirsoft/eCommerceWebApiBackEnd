@@ -17,13 +17,7 @@ namespace eCommerceWebApiBackEnd.Controllers
             _productService = productService;
         }
 
-        // GET: api/product
-        [HttpGet]
-        public async Task<ActionResult<ServiceResponse<List<Product>>>> GetProduct()
-        {
-            var result = await _productService.GetAllProductsAsync();
-            return Ok(result);
-        }
+
 
         //Get: api/product/page/{page}
         [HttpGet("page/{page}")]
@@ -49,18 +43,6 @@ namespace eCommerceWebApiBackEnd.Controllers
             return Ok(result);
         }
 
-        //Get: api/product/category/{categoryUrl}
-        [HttpGet("category/{categoryUrl}")]
-        public async Task<ActionResult<ServiceResponse<List<Product>>>> GetProductsByCategory(string categoryUrl)
-        {
-            var result = await _productService.GetProductsByCategory(categoryUrl);
-            if (result.Data == null)
-            {
-                return NotFound(result);
-            }
-            return Ok(result);
-        }
-
         //Get: api/product/category/{categoryUrl}/page/{page}
         [HttpGet("category/{categoryUrl}/page/{page}")]
         public async Task<ActionResult<ServiceResponse<ProductPaginationDto>>> GetProductsByCategoryWithPagination(string categoryUrl, int page = 1)
@@ -72,12 +54,11 @@ namespace eCommerceWebApiBackEnd.Controllers
             }
             return Ok(result);
         }
-
-        //Get: api/product/search/{searchText}
-        [HttpGet("search/{searchText}")]
-        public async Task<ActionResult<ServiceResponse<List<Product>>>> SearchProducts(string searchText)
+        //Get: api/product/featured/page/{page}
+        [HttpGet("featured/page/{page}")]
+        public async Task<ActionResult<ServiceResponse<ProductPaginationDto>>> GetFeaturedProductsWithPagination(int page = 1)
         {
-            var result = await _productService.SearchProducts(searchText);
+            var result = await _productService.GetFeaturedProductsWithPagination(page);
             if (result.Data == null)
             {
                 return NotFound(result);
@@ -107,6 +88,27 @@ namespace eCommerceWebApiBackEnd.Controllers
                 return NotFound(result);
             }
             return Ok(result);
+        }      
+
+        // These are(GetProduct,GetProductsByCategory,GetFeaturedProducts,SearchProducts) not used now, becoz pagination 
+        // GET: api/product
+        [HttpGet]
+        public async Task<ActionResult<ServiceResponse<List<Product>>>> GetProduct()
+        {
+            var result = await _productService.GetAllProductsAsync();
+            return Ok(result);
+        }
+
+        //Get: api/product/category/{categoryUrl}
+        [HttpGet("category/{categoryUrl}")]
+        public async Task<ActionResult<ServiceResponse<List<Product>>>> GetProductsByCategory(string categoryUrl)
+        {
+            var result = await _productService.GetProductsByCategory(categoryUrl);
+            if (result.Data == null)
+            {
+                return NotFound(result);
+            }
+            return Ok(result);
         }
 
         //Get: api/product/featured
@@ -121,16 +123,18 @@ namespace eCommerceWebApiBackEnd.Controllers
             return Ok(result);
         }
 
-        //Get: api/product/featured/page/{page}
-        [HttpGet("featured/page/{page}")]
-        public async Task<ActionResult<ServiceResponse<ProductPaginationDto>>> GetFeaturedProductsWithPagination(int page = 1)
+        //Get: api/product/search/{searchText}
+        [HttpGet("search/{searchText}")]
+        public async Task<ActionResult<ServiceResponse<List<Product>>>> SearchProducts(string searchText)
         {
-            var result = await _productService.GetFeaturedProductsWithPagination(page);
+            var result = await _productService.SearchProducts(searchText);
             if (result.Data == null)
             {
                 return NotFound(result);
             }
             return Ok(result);
-        }       
+        }
+
+        // End These are(GetAllProductsAsync,GetProductsByCategory,GetFeaturedProducts,SearchProducts) not used now, becoz pagination functonality is implemented
     }
 }
