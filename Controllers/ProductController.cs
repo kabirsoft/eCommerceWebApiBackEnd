@@ -1,5 +1,5 @@
 ﻿using eCommerceWebApiBackEnd.Dto;
-using eCommerceWebApiBackEnd.Models;
+using eCommerceWebApiBackEnd.Dto;
 using eCommerceWebApiBackEnd.Services.ProductService;
 using eCommerceWebApiBackEnd.Shared;
 using Microsoft.AspNetCore.Mvc;

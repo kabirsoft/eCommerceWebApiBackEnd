@@ -1,5 +1,5 @@
 ﻿using eCommerceWebApiBackEnd.Dto;
-using eCommerceWebApiBackEnd.Models;
+using eCommerceWebApiBackEnd.Dto;
 using eCommerceWebApiBackEnd.Shared;
 
 namespace eCommerceWebApiBackEnd.Services.ProductService

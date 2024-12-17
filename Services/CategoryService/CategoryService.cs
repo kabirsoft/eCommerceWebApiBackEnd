@@ -1,5 +1,5 @@
 ﻿using eCommerceWebApiBackEnd.Data;
-using eCommerceWebApiBackEnd.Models;
+using eCommerceWebApiBackEnd.Dto;
 using eCommerceWebApiBackEnd.Shared;
 using Microsoft.EntityFrameworkCore;
 

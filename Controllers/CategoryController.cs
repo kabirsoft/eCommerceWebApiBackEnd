@@ -1,4 +1,4 @@
-﻿using eCommerceWebApiBackEnd.Models;
+﻿using eCommerceWebApiBackEnd.Dto;
 using eCommerceWebApiBackEnd.Services.CategoryService;
 using eCommerceWebApiBackEnd.Shared;
 using Microsoft.AspNetCore.Http;

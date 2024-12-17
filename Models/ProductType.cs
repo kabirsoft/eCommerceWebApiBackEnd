@@ -1,4 +1,4 @@
-﻿namespace eCommerceWebApiBackEnd.Models
+﻿namespace eCommerceWebApiBackEnd.Dto
 {
     public class ProductType
     {

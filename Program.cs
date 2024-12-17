@@ -1,4 +1,5 @@
 using eCommerceWebApiBackEnd.Data;
+using eCommerceWebApiBackEnd.Services.AuthService;
 using eCommerceWebApiBackEnd.Services.CartService;
 using eCommerceWebApiBackEnd.Services.CategoryService;
 using eCommerceWebApiBackEnd.Services.ProductService;
@@ -26,6 +27,7 @@ builder.Services.AddCors(options =>
 builder.Services.AddScoped<IProductService, ProductService>();
 builder.Services.AddScoped<ICategoryService, CategoryService>();
 builder.Services.AddScoped<ICartService, CartService>();
+builder.Services.AddScoped<IAuthService, AuthService>();
 
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();

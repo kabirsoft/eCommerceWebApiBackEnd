@@ -1,4 +1,4 @@
-﻿using eCommerceWebApiBackEnd.Models;
+﻿using eCommerceWebApiBackEnd.Dto;
 
 namespace eCommerceWebApiBackEnd.Dto
 {
