@@ -7,5 +7,6 @@ namespace eCommerceWebApiBackEnd.Services.AuthService
     {
         Task<ServiceResponse<int>> AddUser(User newUser, string passwored);
         Task<bool> UserExists(string email);
+        Task<ServiceResponse<string>> Login(string email, string password);
     }
 }

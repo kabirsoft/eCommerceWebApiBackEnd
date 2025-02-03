@@ -34,5 +34,17 @@ namespace eCommerceWebApiBackEnd.Controllers
             return Ok(response);
 
         }
+
+        // POST api/auth/Login
+        [HttpPost("Login")]
+        public async Task<ActionResult<ServiceResponse<string>>> Login(UserRegister request)
+        {
+            var response = await _authService.Login(request.Email, request.Password);
+            if(!response.Success)
+            {
+                return BadRequest(response);
+            }
+            return Ok(response);
+        }
     }
 }
