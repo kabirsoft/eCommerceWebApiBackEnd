@@ -37,7 +37,7 @@ namespace eCommerceWebApiBackEnd.Controllers
 
         // POST api/auth/Login
         [HttpPost("Login")]
-        public async Task<ActionResult<ServiceResponse<string>>> Login(UserRegister request)
+        public async Task<ActionResult<ServiceResponse<string>>> Login(UserLogin request)
         {
             var response = await _authService.Login(request.Email, request.Password);
             if(!response.Success)
